@@ -113,5 +113,5 @@ La contraseña efectiva puede variar si las cuentas ya existían o fueron modifi
 
 ---
 
-**Proyecto académico — Sistema de Gestión de la Clínica Vida Salud.**
+**Proyecto para el 2do Parcial de Ingeniería de Requisitos y Modelado — Sistema de Gestión de la Clínica Vida Salud.**
 

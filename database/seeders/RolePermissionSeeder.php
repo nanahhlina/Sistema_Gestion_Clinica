@@ -45,6 +45,7 @@ class RolePermissionSeeder extends Seeder
                 'lotes.gestionar' => 'Gestionar lotes',
                 'finanzas.configurar' => 'Configurar el tipo de cambio',
                 'pagos.reembolsar' => 'Registrar reembolsos completos',
+                'recordatorios.gestionar' => 'Gestionar recordatorios de citas para pacientes y médicos',
             ];
 
             foreach ($permissions as $code => $description) {
@@ -54,8 +55,8 @@ class RolePermissionSeeder extends Seeder
             $roles = [
                 'Administrador' => ['usuarios.gestionar', 'roles.gestionar', 'pacientes.gestionar', 'citas.gestionar', 'agenda.consultar', 'medicos.gestionar', 'especialidades.gestionar',
                     'horarios.gestionar', 'analisis.gestionar', 'reportes.administrativos', 'bitacora.consultar',
-                    'pagos.registrar', 'ventas.gestionar', 'productos.gestionar', 'proveedores.gestionar', 'compras.gestionar', 'inventario.consultar', 'inventario.gestionar', 'lotes.gestionar', 'finanzas.configurar', 'pagos.reembolsar'],
-                'Recepcionista' => ['pacientes.gestionar', 'medicos.gestionar', 'especialidades.gestionar', 'citas.gestionar', 'agenda.consultar', 'reportes.administrativos', 'pagos.registrar', 'ventas.gestionar'],
+                    'pagos.registrar', 'ventas.gestionar', 'productos.gestionar', 'proveedores.gestionar', 'compras.gestionar', 'inventario.consultar', 'inventario.gestionar', 'lotes.gestionar', 'finanzas.configurar', 'pagos.reembolsar', 'recordatorios.gestionar'],
+                'Recepcionista' => ['pacientes.gestionar', 'medicos.gestionar', 'especialidades.gestionar', 'citas.gestionar', 'agenda.consultar', 'reportes.administrativos', 'pagos.registrar', 'ventas.gestionar', 'recordatorios.gestionar'],
                 'Medico' => ['agenda.consultar', 'atencion.registrar', 'historia.consultar', 'laboratorio.solicitar', 'laboratorio.consultar', 'reportes.clinicos'],
                 'Laboratorista' => ['laboratorio.consultar', 'laboratorio.procesar', 'reportes.laboratorio'],
                 'Paciente' => ['citas.propias', 'perfil.propio'],

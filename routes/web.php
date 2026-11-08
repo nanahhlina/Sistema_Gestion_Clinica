@@ -26,7 +26,9 @@ use App\Modules\GestionFinanciera\Controllers\PrecioConsultaController;
 use App\Modules\GestionLaboratorio\Controllers\OrdenLaboratorioController;
 use App\Modules\GestionLaboratorio\Controllers\ResultadoLabController;
 use App\Modules\GestionLaboratorio\Controllers\TipoAnalisisController;
+use App\Modules\GestionPacientes\Controllers\NotificacionController;
 use App\Modules\GestionPacientes\Controllers\PacienteController;
+use App\Modules\GestionPacientes\Controllers\RecordatorioController;
 use App\Modules\ReportesSistema\Controllers\BitacoraController;
 use App\Modules\ReportesSistema\Controllers\ReporteController;
 use App\Modules\Shared\Controllers\CatalogoRouterController;
@@ -105,6 +107,23 @@ Route::middleware(['auth', 'active'])->group(function (): void {
         Route::get('/citas/{id}/gestionar', [CitaController::class, 'edit'])->whereNumber('id')->name('appointments.edit');
         Route::post('/citas/{id}/gestionar', [CitaController::class, 'update'])->whereNumber('id')->name('appointments.update');
         Route::get('/mi-cuenta/citas', [CitaController::class, 'mine'])->name('appointments.mine');
+        Route::get('/mi-cuenta/recordatorios', [RecordatorioController::class, 'patientIndex'])->name('patient.reminders');
+        Route::get('/agenda/recordatorios', [RecordatorioController::class, 'doctorIndex'])->name('doctor.reminders');
+        Route::get('/notificaciones', [NotificacionController::class, 'index'])->name('notifications.index');
+
+        // CU24 - Gestionar recordatorios
+        Route::get('/recordatorios', [RecordatorioController::class, 'index'])->name('reminders.index');
+        Route::get('/recordatorios/nuevo', [RecordatorioController::class, 'create'])->name('reminders.create');
+        Route::post('/recordatorios', [RecordatorioController::class, 'store'])->name('reminders.store');
+        Route::post('/recordatorios/procesar', [RecordatorioController::class, 'processScheduled'])->name('reminders.process');
+        Route::get('/recordatorios/{id}', [RecordatorioController::class, 'show'])->whereNumber('id')->name('reminders.show');
+        Route::get('/recordatorios/{id}/editar', [RecordatorioController::class, 'edit'])->whereNumber('id')->name('reminders.edit');
+        Route::post('/recordatorios/{id}', [RecordatorioController::class, 'update'])->whereNumber('id')->name('reminders.update');
+        Route::get('/recordatorios/{id}/cancelar', [RecordatorioController::class, 'cancelForm'])->whereNumber('id')->name('reminders.cancel.form');
+        Route::post('/recordatorios/{id}/cancelar', [RecordatorioController::class, 'cancel'])->whereNumber('id')->name('reminders.cancel');
+        Route::post('/recordatorios/{id}/enviar', [RecordatorioController::class, 'sendNow'])->whereNumber('id')->name('reminders.send');
+        Route::post('/recordatorios/{id}/sincronizar', [RecordatorioController::class, 'syncAppointment'])->whereNumber('id')->name('reminders.sync');
+
         Route::get('/mi-cuenta/reservar', [ReservaCitaController::class, 'create'])->name('reservations.create');
         Route::post('/mi-cuenta/reservar', [ReservaCitaController::class, 'store'])->name('reservations.store');
         Route::get('/mi-cuenta/historial', [HistoriaClinicaController::class, 'mine'])->name('clinical.mine');

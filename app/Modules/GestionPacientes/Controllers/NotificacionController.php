@@ -3,10 +3,24 @@
 namespace App\Modules\GestionPacientes\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 /**
- * Estructura reservada segun el diagrama del usuario.
- * Auxiliar del diagrama; notificaciones pendientes.
- * Sin rutas nuevas ni acciones que simulen funcionalidad implementada.
+ * Notificaciones y Recordatorios según el diagrama del sistema.
+ * Conectado con la gestión de recordatorios CU24.
  */
-class NotificacionController extends Controller {}
+class NotificacionController extends Controller
+{
+    public function index(Request $request, RecordatorioController $recordatorios)
+    {
+        if ($request->user()->isPatient()) {
+            return $recordatorios->patientIndex($request);
+        }
+
+        if ($request->user()->isDoctor()) {
+            return $recordatorios->doctorIndex($request);
+        }
+
+        return $recordatorios->index($request);
+    }
+}

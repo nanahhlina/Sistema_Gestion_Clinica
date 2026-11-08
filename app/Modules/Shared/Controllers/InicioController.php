@@ -65,19 +65,30 @@ class InicioController extends Controller
             $add('Bitácora', 'Actividad y trazabilidad', 'shield', route('auditoria.index'));
         }
 
+        if ($user->hasPermission('recordatorios.gestionar') || ($user->hasPermission('citas.gestionar') && ! $user->isDoctor() && ! $user->isPatient())) {
+            $add('Recordatorios', 'Recordatorios para pacientes y médicos sobre sus citas', 'bell', route('reminders.index'));
+            $stats['Recordatorios programados'] = DB::table('vida_salud.recordatorio')->where('estado', 'Programado')->count();
+        }
+
         if ($user->hasPermission('citas.gestionar') && ! $user->isDoctor() && ! $user->isPatient()) {
             $add('Agendar cita', 'Programar una cita médica', 'calendar', route('appointments.create'));
         }
         if ($user->isPatient()) {
             if ($user->hasPermission('citas.propias')) {
                 $add('Mis citas y reservas', 'Reserva y consulta tus citas', 'calendar', route('appointments.mine'));
+                $add('Mis recordatorios', 'Avisos y recordatorios de tus próximas citas', 'bell', route('patient.reminders'));
             }
             if ($user->hasPermission('perfil.propio')) {
                 $add('Mi historial clínico', 'Diagnósticos, tratamientos y resultados publicados', 'file', route('clinical.mine'));
             }
         }
-        if ($user->isDoctor() && $user->hasPermission('historia.consultar')) {
-            $add('Atención e historial clínico', 'Pacientes, diagnósticos y tratamientos', 'doctor', route('clinical.index'));
+        if ($user->isDoctor()) {
+            if ($user->hasPermission('historia.consultar')) {
+                $add('Atención e historial clínico', 'Pacientes, diagnósticos y tratamientos', 'doctor', route('clinical.index'));
+            }
+            if ($user->hasPermission('agenda.consultar')) {
+                $add('Recordatorios de citas', 'Recordatorios de consultas con tus pacientes', 'bell', route('doctor.reminders'));
+            }
         }
         if (in_array($user->roleName(), ['Medico', 'Laboratorista']) && $user->hasPermission('laboratorio.consultar')) {
             $add('Laboratorio', 'Órdenes y resultados autorizados', 'file', route('orders.index'));

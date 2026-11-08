@@ -12,6 +12,7 @@
         @case('chart') @case('reportes') @case('bar-chart') @case('chart-column')<path d="M3 3v18h18M7 16v-4m5 4V7m5 9v-6" />@break
         @case('shield') @case('roles') @case('auditoria') @case('shield-check')<path d="m12 2 9 4v6c0 5-9 10-9 10S3 17 3 12V6zM8 12l3 3 5-6" />@break
         @case('clock') @case('horarios')<circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />@break
+        @case('bell') @case('recordatorios') @case('notificaciones')<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />@break
         @case('logout')<path d="M9 21H4V3h5m6 4 5 5-5 5m-7-5h12" />@break
         @case('arrow-left')<path d="m10 5-7 7 7 7M3 12h18" />@break
         @case('arrow-right')<path d="m14 5 7 7-7 7M3 12h18" />@break

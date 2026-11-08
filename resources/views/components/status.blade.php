@@ -2,8 +2,8 @@
 @php
     $status = mb_strtolower((string) $value);
     $tone = match ($status) {
-        'confirmada', 'confirmado', 'atendida', 'atendido', 'completada', 'completado', 'publicada', 'publicado', 'finalizada', 'finalizado', 'activo', 'activa', 'aprobada' => 'success',
-        'cancelada', 'cancelado', 'inasistencia', 'inactivo', 'inactiva', 'rechazada' => 'danger',
+        'confirmada', 'confirmado', 'atendida', 'atendido', 'completada', 'completado', 'publicada', 'publicado', 'finalizada', 'finalizado', 'activo', 'activa', 'aprobada', 'enviado', 'enviada' => 'success',
+        'cancelada', 'cancelado', 'inasistencia', 'inactivo', 'inactiva', 'rechazada', 'fallido', 'fallida' => 'danger',
         'pendiente', 'solicitada', 'solicitado', 'programada', 'programado' => 'warning',
         default => 'info',
     };

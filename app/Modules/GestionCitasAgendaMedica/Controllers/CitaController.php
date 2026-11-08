@@ -5,6 +5,7 @@ namespace App\Modules\GestionCitasAgendaMedica\Controllers;
 use App\Modules\GestionCitasAgendaMedica\Services\CitaService;
 use App\Modules\GestionCitasAgendaMedica\Services\ConsultaAgendaService;
 use App\Modules\GestionFinanciera\Services\Importe;
+use App\Modules\GestionPacientes\Services\RecordatorioService;
 use App\Modules\Shared\Clinic;
 use App\Modules\Shared\Controllers\FlujoController;
 use App\Modules\Shared\Services\OperacionWeb;
@@ -91,8 +92,9 @@ class CitaController extends FlujoController
     {
         $row = $service->read($request->user(), $id);
         $events = DB::table('evento_cita as e')->join('usuario as u', 'u.id', '=', 'e.usuario_id')->where('e.cita_id', $id)->orderByDesc('e.id')->select('e.*')->selectRaw("concat_ws(' ',u.nombres,u.apellidos) as actor")->get();
+        $recordatorios = DB::table('vida_salud.recordatorio')->where('cita_id', $id)->orderByDesc('id')->get();
 
-        return view('appointments.show', compact('row', 'events'));
+        return view('appointments.show', compact('row', 'events', 'recordatorios'));
     }
 
     public function edit(Request $request, int $id, CitaService $service)
@@ -128,8 +130,10 @@ class CitaController extends FlujoController
             $row = $service->lock($id, $data['version']);
             if ($data['accion'] === 'cancelar') {
                 DB::select('select vida_salud.cancelar_cita(?,?,?)', [$request->user()->id, $id, $data['motivo']]);
+                app(RecordatorioService::class)->syncWithAppointmentChange($id, 'cancelar', null, $data['motivo'], $request->user());
             } elseif ($data['accion'] === 'reprogramar') {
                 DB::select('select vida_salud.reprogramar_cita(?,?,?)', [$request->user()->id, $id, Clinic::date($data['inicio'])]);
+                app(RecordatorioService::class)->syncWithAppointmentChange($id, 'reprogramar', $data['inicio'], null, $request->user());
             } else {
                 DB::select('select vida_salud.cambiar_asistencia(?,?,?)', [$request->user()->id, $id, $data['accion'] === 'confirmar' ? 'Confirmada' : 'Inasistencia']);
             }

@@ -2,6 +2,7 @@
 
 use App\Modules\GestionFinanciera\Services\PayPalGateway;
 use App\Modules\GestionFinanciera\Services\PayPalService;
+use App\Modules\GestionPacientes\Services\RecordatorioService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -51,3 +52,12 @@ Artisan::command('paypal:conciliar', function () {
     return 0;
 })->purpose('Conciliar únicamente pagos PayPal Sandbox existentes, con exclusión persistida por pago');
 Schedule::command('paypal:conciliar')->everyMinute()->withoutOverlapping();
+
+Artisan::command('recordatorios:enviar', function () {
+    $service = app(RecordatorioService::class);
+    $result = $service->processScheduled();
+    $this->info("Recordatorios procesados: {$result['total']} (Enviados: {$result['enviados']}, Fallidos: {$result['fallidos']})");
+
+    return 0;
+})->purpose('Enviar los recordatorios programados pendientes cuya fecha y hora hayan llegado');
+Schedule::command('recordatorios:enviar')->everyMinute()->withoutOverlapping();
